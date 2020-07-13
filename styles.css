@@ -1,0 +1,19 @@
+table, th, td{
+    border: 1px solid black;
+  border-collapse: collapse;
+  margin-left: 15px;
+}
+main .form-control
+{
+    /* center form controls */
+    display: inline-block;
+
+    /* override Bootstrap's 100% width for form controls */
+    width: 25%;
+}
+.form-row, p{
+  margin-left: 15px;
+}
+.btn-primary{
+  margin-left: 15px;
+}
