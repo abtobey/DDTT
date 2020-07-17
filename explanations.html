@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <title>Explanations</title>
+</head>
+<body>
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+          <h1 class="display-4">Dual Density Tilt Tray Sorter Simulation</h1>
+          <p class="lead">Definitions and explanations</p>
+        </div>
+      </div>
+      <main class="container">
+          <h1>
+              Utilization
+          </h1>
+          <p>
+            A tilt tray sorter is used to sort items faster and more accurately than a human could. Pieces are sorter by whichever criteria has been programmed into the machine, which can be destination zip code, product type, weight, or many more.
+          </p>
+          <p>
+              It works by using trays that circle in a loop and drop when they pass by a chute in which the piece on the tray is intended to drop. A dual density tilt tray sorter has two sets of trays, one which only drops on the inside of the loop and one which only drops on the outside, allowing sortation at twice the speed as if it only had one set of trays.
+          </p>
+          <br>
+          <h1>
+              What are we simulating?
+          </h1>
+          <p>
+              Ideally, the pieces per hour, or PPH of the sorter would simply be two times the number of trays that pass by per hour. However, there are various factors that reduce that number.
+              <ul>
+                  <li>Humans placing the pieces on the trays are not fast enough to hit every tray</li>
+                  <li>If the destination is unavailable because it is full, the tray will not drop and will not be able to be used the next time</li>
+                  <li>At the start, all trays are empty, so they must have a piece placed on them and then move to their destination before sorting</li>
+                  <li>Some piece will not be able to be read (no reads). This is because the sorter uses a system of cameras to detect a barcode, but sometimes this barcode is damaged or placed face down.</li>
+              </ul> 
+          </p>
+          <br>
+          <h1>Terminology</h1>
+          <h2>Inductor</h2>
+          <p>
+              An inductor is the person who places the piece on the tray, but they can only place a piece on an empty tray. Inductors are lined up on platforms. Each inductor will have fewer empty trays on which to place a piece, because the inductors in front of them are placing pieces on trays. Inductors can only induct inside or outside trays, but not both, and trays can only drop into the inside or outside loop. In this simulation, inducts 1 and 4 are outside and 2 and 3 are inside
+          </p>
+          <br>
+          <h2>Sweeper</h2>
+          <p>
+              When the trays drop pieces into the chutes, those pieces fall into a bag attached to the chute. Once this bag is full, the sorter will not drop any more pieces into that chute until it is replaced with an empty one. Sweepers are responsible for replacing the full bags with empty ones. In this simulation, they will not change the bags until they completely fill up.
+          </p>
+          <br>
+          <h2>Rejects</h2>
+          <p>There are two types of rejects in this simulation:</p>
+          <ul>
+              <li>No Reads: These drop into the chute on the far right side of the line</li>
+              <li>Max Recirc: These are pieces that have gone around 3 times and not dropped into their intended chute. They drop into the max recirc chute, which is the third from the right, so that they tray can be emptied and they can be sorted again later.</li>
+          </ul>
+          <br>
+          <h2>PPH</h2>
+          <p>
+              PPH means pieces per hour, the ultimate goal is to get the most with the least people. Each additional inductor on a platform increases the PPH by fewer than the person in front of them because they have fewer empty trays. If there are too few sweepers, the PPH will drop because the trays will not drop into a full chute, but too many and they will not be fully utilized.
+          </p>
+          <br>
+          <h2>
+              Sorter Types
+          </h2>
+          <p>
+              This type of sorter can have either 2 or 4 platforms. A platform is a group of inductors, typically 4 or 5. If the sorter has 4 platforms, then a piece will only travel halfway around the loop before passing by the next platform. Some sorters are equipped with direct feeds- conveyor belts that feed the platform pre-split mail which will all drop into one of the chutes it will pass by before it reaches the next platform.
+              If the sorter has 4 inducts and does not have direct feeds, it will have flow splitters. These randomly distribute the mail to the two outside and the two inside platforms based only on whether it falls into an inside or an outside chute. In this scenario, half of pieces will pass by the other induct platform before dropping, which reduces the amount of empty trays available. 
+          </p>
+
+
+      </main>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>    
+
+</body>
+</html>
