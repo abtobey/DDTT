@@ -1,7 +1,9 @@
+
 table, th, td{
     border: 1px solid black;
   border-collapse: collapse;
   margin-left: 15px;
+  font-size: 10px;
 }
 main .form-control
 {
@@ -17,3 +19,62 @@ main .form-control
 .btn-primary{
   margin-left: 15px;
 }
+#stats tr th{
+  font-size:20px;
+}
+.platform1, .platform2, .platform3, .platform4 {
+  width: 100px;
+  height: 50px;
+  background: green;
+  border: 2px solid black;
+  text-align:center;
+  margin-left: 15px;
+}
+
+.AB{
+  position: relative;
+  padding: 40px;
+  display:inline-block;
+  
+}
+.CD{
+  position: relative;
+  padding:40px;
+  display: inline-block;
+}
+.Top{
+  float: right;
+}
+
+#bottomrows{
+  float:left;
+}
+#toprows{
+  float:right;
+}
+.Bottom{
+  float:left;
+}
+.toptable{
+  float:left;
+}
+.platform1{
+  position:absolute;
+  top: 20px;
+  left: 50px;
+}
+.platform2{
+  position:absolute;
+  left:50px;
+  bottom: 0px;
+}
+.platform3{
+  position:absolute;
+  top: 20px;
+  right: 50px;
+}
+.platform4{
+  position:absolute;
+  right:50px;
+}
+

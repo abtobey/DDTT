@@ -8,7 +8,7 @@
         
         <!-- documentation at http://getbootstrap.com/docs/4.1/, alternative themes at https://bootswatch.com/ -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-        <link href="styles.css" rel="stylesheet">
+        <link href="./styles.css" rel="stylesheet">
         <title>
         Simulation
         </title>
@@ -171,6 +171,7 @@
                 sorterType=0;
                 totalInductors=inductors;
                 CDsweep=lineLength;
+                //document.getElementsByClassName("Bottom").style.visibility = "hidden";
                 break;
             case "Four induct platforms with flow splitters":
                 sorterType=1;
@@ -227,7 +228,14 @@
             //each time j increments is the amount of time for the sorter to move one tray length= approx. .25 seconds
             for (j=0; j<=214*sortSpan; j++)
             {
-                
+                if(traysInner[(lineLength+2*(inductors+1)+trayPos)%trayCount] != trayCount)
+                {
+                    derates++;
+                }
+                if(traysOuter[(lineLength+2*(inductors+1)+trayPos)%trayCount] != trayCount)
+                {
+                    derates++;
+                }
                 //add row to table every minute
                 if(j % 214==0 && j > 0){
                     addRow(j/214);
@@ -236,7 +244,7 @@
                 //tells me if the loop started
                 trayPos +=1;
                 //moves trays forward, resets when it gets to end of loop
-                if(trayPos > trayCount){
+                if(trayPos >= trayCount){
                     trayPos=0;
                 }
                 //sweepers: it takes about 50 seconds or 200 increments to sweep a bag, but this value can be adjusted
@@ -490,7 +498,7 @@
                         }
                         //if < 35 pieces in the bag, it can drop the piece, otherwise chute is full and piece recircs
                         pieceCount=parseInt(document.getElementById(side).rows[line].cells[chute].innerHTML);
-                        if(pieceCount < 35 && traysInner[k] != reject && traysInner[k] != nrChute && traysInner[k] != reject2 && traysInner[k] != nrChute2){
+                        if(pieceCount < 35 && ((traysInner[k] != reject && traysInner[k] != nrChute && traysInner[k] != reject2 && traysInner[k] != nrChute2)||(sorterType==0 && (traysInner[k]== nrChute2 || traysInner[k]==reject2)))){
                             pieceCount ++;
                             document.getElementById(side).rows[line].cells[chute].innerHTML = pieceCount;
                             if(pieceCount== 35){
@@ -567,19 +575,19 @@
                 }
 
             }
-            for(i=0; i<trayCount; i++){
-                txt += "Tray " + i + ": Inside: ";
-                if(traysInner[i] !=trayCount){
-                    txt +=traysInner[i];
-                } 
-                txt +=" Outside: ";
-                 if(traysOuter[i] != trayCount){
-                     txt+= traysOuter[i];
-                 }
-                 txt +="<br>";
-            }
+            // for(i=0; i<trayCount; i++){
+            //     txt += "Tray " + i + ": Inside: ";
+            //     if(traysInner[i] !=trayCount){
+            //         txt +=traysInner[i];
+            //     } 
+            //     txt +=" Outside: ";
+            //      if(traysOuter[i] != trayCount){
+            //          txt+= traysOuter[i];
+            //      }
+            //      txt +="<br>";
+            // }
             updateTotals();
-            document.getElementById("test").innerHTML=txt;
+            document.getElementById("test").innerHTML=txt +trayPos;
         }
         </script>
     </head>
@@ -639,9 +647,11 @@
                 
               </div>
             </div>
+    <div class="AB col-12">
+        <figure class="Top platform1">Platform 1</figure>
+        <figure class="Top platform2">Platform 2</figure>
 
-
-        <table id="toprows" style="width:80%">
+        <table class="Top toptable col-11" id="toprows">
             <thead>
                 <tr id="ALineNumbers">
                     <script>
@@ -655,25 +665,25 @@
                 </tr>
             </thead>
             <tr id="row1">
-            <script>
-                //setting up display for rows
-                row1=document.getElementById("row1");
-                for(i=0; i< lineLength; i++)
-                {
-                    td = row1.appendChild(document.createElement('td'));
-                    td.innerHTML =0;
-                }
-            </script>
+                <script>
+                    //setting up display for rows
+                    row1=document.getElementById("row1");
+                    for(i=0; i< lineLength; i++)
+                    {
+                        td = row1.appendChild(document.createElement('td'));
+                        td.innerHTML =0;
+                    }
+                </script>
             </tr>
             <tr id="row2">
-            <script>
-                row2=document.getElementById("row2");
-                for(i=0; i< lineLength; i++)
-                {
-                    td = row2.appendChild(document.createElement('td'));
-                    td.innerHTML =0;
-                }
-            </script>
+                <script>
+                    row2=document.getElementById("row2");
+                    for(i=0; i< lineLength; i++)
+                    {
+                        td = row2.appendChild(document.createElement('td'));
+                        td.innerHTML =0;
+                    }
+                </script>
             </tr>
             <tfoot>
                 <tr id="BLineNumbers">
@@ -687,10 +697,12 @@
                     </script>
                 </tr>
             </tfoot>
-            </table>
-            <br>
-            <br>
-            <table id ="bottomrows" style="width:80%">
+        </table>
+    </div>
+    <br>
+    <br>
+        <div class="CD col-12">
+            <table class="col-11" id ="bottomrows">
                 <thead>
                     <tr id="CLineNumbers">
                         <script>
@@ -704,24 +716,24 @@
                     </tr>
                 </thead>
             <tr id = "row3">
-            <script>
-                row3=document.getElementById("row3");
-                for(i=0; i< lineLength; i++)
-                {
-                    td = row3.appendChild(document.createElement('td'));
-                    td.innerHTML =0;
-                }
-            </script>
+                <script>
+                    row3=document.getElementById("row3");
+                    for(i=0; i< lineLength; i++)
+                    {
+                        td = row3.appendChild(document.createElement('td'));
+                        td.innerHTML =0;
+                    }
+                </script>
             </tr>
             <tr id = "row4">
-            <script>
-                row4=document.getElementById("row4");
-                for(i=0; i< lineLength; i++)
-                {
-                    td = row4.appendChild(document.createElement('td'));
-                    td.innerHTML =0;
-                }
-            </script>
+                <script>
+                    row4=document.getElementById("row4");
+                    for(i=0; i< lineLength; i++)
+                    {
+                        td = row4.appendChild(document.createElement('td'));
+                        td.innerHTML =0;
+                    }
+                </script>
             </tr>
             <tfoot>
                 <tr id="DLineNumbers">
@@ -735,10 +747,14 @@
                     </script>
                 </tr>
             </tfoot>
-            </table>
-            <br><br>
-            <button class="btn btn-primary", onclick="moveTrays()">Start Simulation</button>
-            
+        </table>
+        <br><br>
+        <figure class="Bottom platform3">Platform 3</figure>
+        <figure class="Bottom platform4">Platform 4</figure>
+        </div>
+        <br>
+        <button class="btn btn-primary", onclick="moveTrays()">Start Simulation</button>
+        
         <table id="stats" style="width:40%">
             <thead>
                 <tr>
