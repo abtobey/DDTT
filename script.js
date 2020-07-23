@@ -30,6 +30,7 @@
         var reject2 = lineLength * 2 + 97;
         var nrChute2 = lineLength * 2 + 99;      
         var j;
+        var sweepers=0;
         var chute=0;
         var line=0;
         var txt="";
@@ -56,6 +57,12 @@
         var sorterType=0;
         var totalInductors=0;
         var CDsweep;
+        const canInductIn= [];
+        const canInductOut= [];
+        const CanSweepIn= [];
+        const currentLocIn= [];
+        const CanSweepOut= [];
+        const currentLocOut= [];
         
 
 
@@ -96,7 +103,7 @@
             let footer = stats.rows.length-1;
             stats.rows[footer].cells[1].innerHTML= PPHtotal + deratesTotal;
             stats.rows[footer].cells[2].innerHTML= PPHtotal;
-            stats.rows[footer].cells[3].innerHTML= Math.floor(PPHtotal * 60/minutesElapsed);
+            stats.rows[footer].cells[3].innerHTML= Math.floor(PPHtotal * 60/sortSpan);
             stats.rows[footer].cells[4].innerHTML= deratesTotal;
             stats.rows[footer].cells[5].innerHTML= nrTotal;
             stats.rows[footer].cells[6].innerHTML= maxRecircTotal;
@@ -169,8 +176,10 @@
                 CDsweep=lineLength-4;
                 break;
             }
-            const canInductIn= new Array(totalInductors).fill(0);
-            const canInductOut= new Array(totalInductors).fill(0);
+            for(let i=0; i<totalInductors; i++){
+                canInductIn.push(0);
+                canInductOut.push(0);
+            }
             if(document.getElementById("nrPercent").value !=""){
                 noRead =parseFloat(document.getElementById("nrPercent").value)/100;
             }
@@ -180,20 +189,20 @@
             
             var intCheck=parseInt(document.getElementById("sweepersPerLine").value);
             if(Number.isInteger(intCheck)){
-                var sweepers=intCheck;
-                document.getElementById("test").innerHTML=sweepers;
+                sweepers=intCheck;
             }
             //default value is 2 
             else{
-            var sweepers=2;
+            sweepers=2;
+            console.log(sweepers);
             document.getElementById("test").innerHTML="incorrect value entered for number of sweepers" + noRead + " " + sorterType + " " + document.getElementById("sorterType").value;}
             
-            const CanSweepIn= new Array(sweepers * 2).fill(0);
-            const currentLocIn= new Array(sweepers * 2).fill(0);
-            const sweeperPosIn = new Array(sweepers * 2).fill(0);
-            const CanSweepOut= new Array(sweepers * 2).fill(0);
-            const currentLocOut= new Array(sweepers * 2).fill(0);
-            const sweeperPosOut = new Array(sweepers * 2).fill(0);
+            for(let i=0; i< sweepers*2; i++){
+                CanSweepIn.push(0);
+                CanSweepOut.push(0);
+                currentLocIn.push(0);
+                currentLocOut.push(0);
+            }
             var separation= Math.floor(lineLength/sweepers);
             for(i=0; i< sweepers; i++)
             {
@@ -209,9 +218,21 @@
             if(document.getElementById("sortSpan").value !=""){
                 sortSpan =parseInt(document.getElementById("sortSpan").value);
             }
-            
+            var minutesLeft=sortSpan;
+            var timerInterval=setInterval(function(){
+                minutesLeft--;
+                oneMinute();
+
+                if(minutesLeft ===0){
+                    clearInterval(timerInterval);
+                }
+
+            }, 250);
+        }
+        
+        function oneMinute(){
             //each time j increments is the amount of time for the sorter to move one tray length= approx. .25 seconds
-            for (j=0; j<=214*sortSpan; j++)
+            for (let j=0; j<=214; j++)
             {
                 if(traysInner[(lineLength+2*(inductors+1)+trayPos)%trayCount] != trayCount)
                 {
@@ -234,7 +255,7 @@
                 }
                 //sweepers: it takes about 50 seconds or 200 increments to sweep a bag, but this value can be adjusted
                 //B Line
-                for(k=0; k< sweepers; k++)
+                for(let k=0; k< sweepers; k++)
                 {
                     if(CanSweepIn[k] > 0)
                     {
@@ -242,7 +263,7 @@
                     }
                     else
                     {
-                        for(m=0; m< lineLength -4; m++)
+                        for(let m=0; m< lineLength -4; m++)
                         {
                             if(CanSweepIn[k] ==0)
                             {
@@ -253,7 +274,7 @@
                                         document.getElementById("toprows").rows[2].cells[currentLocIn[k] + m].innerHTML =0;
                                         document.getElementById("toprows").rows[2].cells[currentLocIn[k] + m].style.backgroundColor="white";
                                         CanSweepIn[k] =sweepSpeed;
-                                        swept= swept + " " +(currentLocIn[k] + m) + "sweeper # " + k;
+                                        console.log((currentLocIn[k] + m) + "sweeper # " + k);
                                         bagCount++;
                                     }
                                 }
@@ -264,7 +285,7 @@
                                         document.getElementById("toprows").rows[2].cells[currentLocIn[k] - m].innerHTML =0;
                                         document.getElementById("toprows").rows[2].cells[currentLocIn[k] - m].style.backgroundColor="white";
                                         CanSweepIn[k] =sweepSpeed;
-                                        swept= swept + " " +(currentLocIn[k] + m);
+                                        console.log(currentLocIn[k] + m);
                                         bagCount++;
                                     }
                                 }
@@ -563,3 +584,4 @@
             updateTotals();
             document.getElementById("test").innerHTML=txt +trayPos;
         }
+        
