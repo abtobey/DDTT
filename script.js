@@ -163,7 +163,8 @@
                 sorterType=0;
                 totalInductors=inductors;
                 CDsweep=lineLength;
-                //document.getElementsByClassName("Bottom").style.visibility = "hidden";
+                document.querySelector(".platform3").setAttribute("style","background: white");
+                document.querySelector(".platform4").setAttribute("style","background: white");
                 break;
             case "Four induct platforms with flow splitters":
                 sorterType=1;
